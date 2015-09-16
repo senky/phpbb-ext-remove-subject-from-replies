@@ -10,6 +10,9 @@
 			"email": "jakubsenko@gmail.com",
 			"role": "Lead Developer"
 		}],
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
 	"require": {
 		"php": ">=5.3.3"
 	},
