@@ -3,7 +3,6 @@
 This is the repository for the development of the phpBB Remove Subject from Replies Extension
 
 [![Build Status](https://travis-ci.org/Senky/phpbb-ext-remove-subject-from-replies.svg?branch=develop)](https://travis-ci.org/Senky/phpbb-ext-remove-subject-from-replies)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Senky/phpbb-ext-remove-subject-from-replies/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Senky/phpbb-ext-remove-subject-from-replies/?branch=develop)
 
 ## Install
 
