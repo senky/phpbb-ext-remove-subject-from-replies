@@ -1,3 +1,10 @@
 <!-- IF not S_PRIVMSGS and not S_NEW_MESSAGE -->
 </div>
+
+<!-- IF S_POST_ACTION or S_PRIVMSGS or S_EDIT_DRAFT -->
+	<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_CODE -->
+		<!-- DEFINE $CAPTCHA_TAB_INDEX = 3 -->
+		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
+	<!-- ENDIF -->
+<!-- ENDIF -->
 <!-- ENDIF -->
