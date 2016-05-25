@@ -1,0 +1,8 @@
+services:
+    senky.removesubjectfromreplies.listener:
+        class: senky\removesubjectfromreplies\event\listener
+        arguments:
+            - '@user'
+            - '%tables.topics%'
+        tags:
+            - { name: event.listener }
