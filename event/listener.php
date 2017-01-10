@@ -50,12 +50,12 @@ class listener implements EventSubscriberInterface
 	{
 		$sql_ary = $event['sql_ary'];
 
-		$sql_ary['SELECT'] .= ', t.topic_title';
+		$sql_ary['SELECT'] .= ', senky_removesubjectfromreplies_t.topic_title';
 		$sql_ary['LEFT_JOIN'][] = array(
 			'FROM'	=> array(
-				$this->topics_table => 't',
+				$this->topics_table => 'senky_removesubjectfromreplies_t',
 			),
-			'ON'	=> 't.topic_last_post_id = f.forum_last_post_id',
+			'ON'	=> 'senky_removesubjectfromreplies_t.topic_last_post_id = f.forum_last_post_id',
 		);
 
 		$event['sql_ary'] = $sql_ary;
