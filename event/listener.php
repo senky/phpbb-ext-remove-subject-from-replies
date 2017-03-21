@@ -25,6 +25,7 @@ class listener implements EventSubscriberInterface
 		return array(
 			'core.display_forums_modify_sql'			=> 'fetch_first_posts_subject_of_last_topic',
 			'core.display_forums_modify_template_vars'	=> 'replace_last_post_subject',
+			'core.posting_modify_template_vars'			=> 'remove_preview_subject',
 		);
 	}
 
@@ -37,8 +38,8 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\user	$user			User object
-	* @param string			$topics_table	Topics table
+	* @param \phpbb\user				$user			User object
+	* @param string						$topics_table	Topics table
 	*/
 	public function __construct(\phpbb\user $user, $topics_table)
 	{
@@ -72,5 +73,15 @@ class listener implements EventSubscriberInterface
 		$forum_row['LAST_POST_SUBJECT_TRUNCATED'] = $last_post_subject_truncated;
 
 		$event['forum_row'] = $forum_row;
+	}
+
+	public function remove_preview_subject($event)
+	{
+		if (!($event['mode'] == 'post' || ($event['mode'] == 'edit' && $event['post_data']['topic_first_post_id'] == $event['post_data']['post_id'])))
+		{
+			$page_data = $event['page_data'];
+			$page_data['PREVIEW_SUBJECT'] = '';
+			$event['page_data'] = $page_data;
+		}
 	}
 }
