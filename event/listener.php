@@ -64,6 +64,11 @@ class listener implements EventSubscriberInterface
 
 	public function replace_last_post_subject($event)
 	{
+		if (!$event['row']['forum_last_post_id'] || $event['row']['forum_password_last_post'] !== '' || !$auth->acl_get('f_read', $event['row']['forum_id_last_post']))
+		{
+			return;
+		}
+
 		$forum_row = $event['forum_row'];
 
 		$last_post_subject = censor_text($event['row']['topic_title']);
