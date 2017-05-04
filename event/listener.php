@@ -24,7 +24,6 @@ class listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.display_forums_modify_sql'			=> 'fetch_first_posts_subject_of_last_topic',
-			'core.display_forums_modify_template_vars'	=> 'replace_last_post_subject',
 			'core.posting_modify_template_vars'			=> 'remove_preview_subject',
 		);
 	}
@@ -51,7 +50,7 @@ class listener implements EventSubscriberInterface
 	{
 		$sql_ary = $event['sql_ary'];
 
-		$sql_ary['SELECT'] .= ', senky_removesubjectfromreplies_t.topic_title';
+		$sql_ary['SELECT'] .= ', senky_removesubjectfromreplies_t.topic_title as forum_last_post_subject';
 		$sql_ary['LEFT_JOIN'][] = array(
 			'FROM'	=> array(
 				$this->topics_table => 'senky_removesubjectfromreplies_t',
@@ -60,24 +59,6 @@ class listener implements EventSubscriberInterface
 		);
 
 		$event['sql_ary'] = $sql_ary;
-	}
-
-	public function replace_last_post_subject($event)
-	{
-		if (!$event['row']['forum_last_post_id'] || $event['row']['forum_password_last_post'] !== '' || !$auth->acl_get('f_read', $event['row']['forum_id_last_post']))
-		{
-			return;
-		}
-
-		$forum_row = $event['forum_row'];
-
-		$last_post_subject = censor_text($event['row']['topic_title']);
-		$last_post_subject_truncated = truncate_string($last_post_subject, 30, 255, false, $this->user->lang['ELLIPSIS']);
-
-		$forum_row['LAST_POST_SUBJECT'] = $last_post_subject;
-		$forum_row['LAST_POST_SUBJECT_TRUNCATED'] = $last_post_subject_truncated;
-
-		$event['forum_row'] = $forum_row;
 	}
 
 	public function remove_preview_subject($event)
