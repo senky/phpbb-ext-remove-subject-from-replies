@@ -24,6 +24,7 @@ class listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.display_forums_modify_sql'			=> 'fetch_first_posts_subject_of_last_topic',
+			'core.display_forums_modify_forum_rows'		=> 'update_subarray_data',
 			'core.display_forums_modify_template_vars'	=> 'assign_reply_flag',
 			'core.posting_modify_template_vars'			=> 'remove_preview_subject',
 		);
@@ -51,7 +52,10 @@ class listener implements EventSubscriberInterface
 	{
 		$sql_ary = $event['sql_ary'];
 
-		$sql_ary['SELECT'] .= ', senky_removesubjectfromreplies_t.topic_first_post_id, senky_removesubjectfromreplies_t.topic_title as forum_last_post_subject';
+		// We need to select forum_last_post_time once more because it is overwritten
+		// before core.display_forums_modify_forum_rows thus we are unable to identify
+		// newer posts in subforums.
+		$sql_ary['SELECT'] .= ', senky_removesubjectfromreplies_t.topic_first_post_id, senky_removesubjectfromreplies_t.topic_title as forum_last_post_subject, f.forum_last_post_time as srsfr_last_post_time';
 		$sql_ary['LEFT_JOIN'][] = array(
 			'FROM'	=> array(
 				$this->topics_table => 'senky_removesubjectfromreplies_t',
@@ -60,6 +64,16 @@ class listener implements EventSubscriberInterface
 		);
 
 		$event['sql_ary'] = $sql_ary;
+	}
+
+	public function update_subarray_data($event)
+	{
+		if ($event['row']['forum_type'] != FORUM_CAT && $event['row']['srsfr_last_post_time'] > $event['forum_rows'][$event['parent_id']]['srsfr_last_post_time'])
+		{
+			$forum_rows = $event['forum_rows'];
+			$forum_rows[$event['parent_id']]['topic_first_post_id'] = $event['row']['topic_first_post_id'];
+			$event['forum_rows'] = $forum_rows;
+		}
 	}
 
 	public function assign_reply_flag($event)
