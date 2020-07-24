@@ -1,0 +1,13 @@
+.postbody p.author {
+    margin-top: 4em;
+}
+
+.postbody .first ~ .author {
+    margin-top: 0;
+}
+
+@media (max-width: 700px) {
+    .postbody  p.author {
+        margin-top: 0;
+    }
+}
