@@ -89,6 +89,7 @@ class listener implements EventSubscriberInterface
 		{
 			$page_data = $event['page_data'];
 			$page_data['PREVIEW_SUBJECT'] = '';
+			$page_data['S_SHOW_TOPIC_ICONS'] = false;
 			$event['page_data'] = $page_data;
 		}
 	}
