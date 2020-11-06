@@ -21,7 +21,7 @@
 	"extra": {
 		"display-name": "Remove Subject from Replies",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.7-RC1,<3.3@dev"
+			"phpbb/phpbb": ">=3.1.7-RC1"
 		}
 	}
 }
